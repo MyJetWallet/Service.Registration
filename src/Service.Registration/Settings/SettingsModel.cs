@@ -7,5 +7,14 @@ namespace Service.Registration.Settings
     {
         [YamlProperty("Registration.SeqServiceUrl")]
         public string SeqServiceUrl { get; set; }
+
+        [YamlProperty("Registration.MyNoSqlWriterUrl")]
+        public string MyNoSqlWriterUrl { get; set; }
+
+        [YamlProperty("Registration.SpotServiceBusHostPort")]
+        public string SpotServiceBusHostPort { get; set; }
+
+        [YamlProperty("Registration.ClientWalletsGrpcServiceUrl")]
+        public string ClientWalletsGrpcServiceUrl { get; set; }
     }
 }
