@@ -16,5 +16,8 @@ namespace Service.Registration.Settings
 
         [YamlProperty("Registration.ClientWalletsGrpcServiceUrl")]
         public string ClientWalletsGrpcServiceUrl { get; set; }
+
+        [YamlProperty("Registration.PostgresConnectionString")]
+        public string PostgresConnectionString { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Autofac.Core.Registration;
+using Service.Registration.Database;
 
 namespace Service.Registration.Modules
 {
@@ -8,7 +9,9 @@ namespace Service.Registration.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            
+            builder
+                .RegisterType<RegistrationRepository>()
+                .As<IRegistrationRepository>();
         }
     }
 }

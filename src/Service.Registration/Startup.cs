@@ -8,6 +8,7 @@ using Autofac;
 using MyJetWallet.Domain.ServiceBus;
 using MyJetWallet.Sdk.GrpcMetrics;
 using MyJetWallet.Sdk.GrpcSchema;
+using MyJetWallet.Sdk.Postgres;
 using MyJetWallet.Sdk.Service;
 using MyNoSqlServer.Abstractions;
 using MyServiceBus.TcpClient;
@@ -15,6 +16,7 @@ using Prometheus;
 using ProtoBuf.Grpc.Server;
 using Service.ClientWallets.Client;
 using Service.ClientWallets.Grpc;
+using Service.Registration.Database;
 using Service.Registration.Grpc;
 using Service.Registration.Modules;
 using Service.Registration.NoSql;
@@ -42,6 +44,8 @@ namespace Service.Registration
             });
 
             services.AddHostedService<ApplicationLifetimeManager>();
+
+            services.AddDatabase(RegistrationContext.Schema, Program.Settings.PostgresConnectionString, o => new RegistrationContext(o));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
