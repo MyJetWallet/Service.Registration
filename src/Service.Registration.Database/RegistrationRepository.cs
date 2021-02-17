@@ -8,7 +8,7 @@ namespace Service.Registration.Database
     public interface IRegistrationRepository
     {
         Task InsertAsync(ClientRegistrationResponse response);
-        Task<ClientRegistrationResponse> GetAsync(string brokerId, string clientId);
+        Task<ClientRegistrationResponse> GetAsync(string clientId);
     }
 
     public class RegistrationRepository: IRegistrationRepository
@@ -31,11 +31,11 @@ namespace Service.Registration.Database
             await ctx.SaveChangesAsync();
         }
 
-        public async Task<ClientRegistrationResponse> GetAsync(string brokerId, string clientId)
+        public async Task<ClientRegistrationResponse> GetAsync(string clientId)
         {
             await using var ctx = new RegistrationContext(_dbContextOptionsBuilder.Options);
 
-            var entity = await ctx.Registrations.FirstOrDefaultAsync(e => e.BrokerId == brokerId && e.ClientId == clientId);
+            var entity = await ctx.Registrations.FirstOrDefaultAsync(e => e.ClientId == clientId);
 
             if (entity == null)
                 return null;

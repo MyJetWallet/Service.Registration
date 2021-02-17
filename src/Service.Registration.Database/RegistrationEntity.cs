@@ -21,10 +21,8 @@ namespace Service.Registration.Database
             RegistrationTime = registrationTime;
         }
 
-        [Key]
         public string BrokerId { get; set; }
 
-        [Key]
         public string ClientId { get; set; }
 
         public string BrandId { get; set; }

@@ -20,7 +20,12 @@ namespace Service.Registration.Database
 
             modelBuilder
                 .Entity<RegistrationEntity>()
-                .HasKey(e => new {e.BrokerId, e.ClientId});
+                .HasKey(e => new {e.ClientId});
+
+            modelBuilder
+                .Entity<RegistrationEntity>()
+                .HasIndex(e => new {e.BrokerId, e.ClientId})
+                .HasDatabaseName("IX-registration-Registrations-BrokerId-ClientId");
 
             base.OnModelCreating(modelBuilder);
         }

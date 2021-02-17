@@ -15,7 +15,8 @@ namespace Service.Registration.Grpc.Models
         public enum RegistrationResult
         {
             Ok,
-            ClientAlreadyRegisterWithOtherBrand
+            ClientAlreadyRegisterWithOtherBrand,
+            ClientAlreadyRegisterWithOtherBroker,
         }
     }
 }

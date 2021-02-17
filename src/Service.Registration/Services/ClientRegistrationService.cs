@@ -50,10 +50,16 @@ namespace Service.Registration.Services
                 ClientRegistrationResponseNoSql.GeneratePartitionKey(clientId.BrokerId),
                 ClientRegistrationResponseNoSql.GenerateRowKey(clientId.ClientId));
 
-            var response = client?.ClientRegistration ?? await _registrationRepository.GetAsync(clientId.BrokerId, clientId.ClientId);
+            var response = client?.ClientRegistration ?? await _registrationRepository.GetAsync(clientId.ClientId);
 
             if (response != null)
             {
+                if (response.ClientId.BrokerId != clientId.BrokerId)
+                {
+                    return new ClientRegistrationResponse()
+                        { Result = ClientRegistrationResponse.RegistrationResult.ClientAlreadyRegisterWithOtherBrand };
+                }
+
                 if (response.ClientId.BrandId != clientId.BrandId)
                 {
                     return new ClientRegistrationResponse()
@@ -72,10 +78,10 @@ namespace Service.Registration.Services
                 RegisterTime = DateTime.UtcNow
             };
 
-            await _clientWalletService.GetWalletsByClient(clientId);
-
             await _registrationRepository.InsertAsync(response);
 
+            await _clientWalletService.GetWalletsByClient(clientId);
+            
             client = ClientRegistrationResponseNoSql.Create(response);
 
             await _writer.InsertOrReplaceAsync(client);
