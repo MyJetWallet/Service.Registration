@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DotNetCoreDecorators;
 using MyJetWallet.Domain;
 using MyJetWallet.Domain.ServiceBus.Models;
+using MyJetWallet.Sdk.Service;
 using MyNoSqlServer.Abstractions;
 using Service.ClientWallets.Grpc;
 using Service.Registration.Database;
@@ -32,6 +33,10 @@ namespace Service.Registration.Services
 
         public async Task<ClientRegistrationResponse> GetOrRegisterClientAsync(JetClientIdentity clientId)
         {
+            clientId.ClientId.AddToActivityAsTag("clientId");
+            clientId.BrokerId.AddToActivityAsTag("brokerId");
+            clientId.BrandId.AddToActivityAsTag("brandId");
+
             try
             {
                 return await CreateClientRegistrationAsync(clientId);
@@ -39,9 +44,18 @@ namespace Service.Registration.Services
             catch(Exception ex)
             {
                 Console.WriteLine($"Cannot create client {clientId.BrokerId}/{clientId.BrandId}/{clientId.ClientId}, exception: {ex}");
+                ex.WriteToActivity();
             }
 
-            return await CreateClientRegistrationAsync(clientId);
+            try
+            {
+                return await CreateClientRegistrationAsync(clientId);
+            }
+            catch (Exception ex)
+            {
+                ex.FailActivity();
+                throw;
+            }
         }
 
         private async Task<ClientRegistrationResponse> CreateClientRegistrationAsync(JetClientIdentity clientId)

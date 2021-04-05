@@ -46,6 +46,8 @@ namespace Service.Registration
             services.AddHostedService<ApplicationLifetimeManager>();
 
             services.AddDatabase(RegistrationContext.Schema, Program.Settings.PostgresConnectionString, o => new RegistrationContext(o));
+
+            services.AddMyTelemetry(Program.Settings.ZipkinUrl);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

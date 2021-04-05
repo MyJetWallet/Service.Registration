@@ -19,5 +19,8 @@ namespace Service.Registration.Settings
 
         [YamlProperty("Registration.PostgresConnectionString")]
         public string PostgresConnectionString { get; set; }
+
+        [YamlProperty("Registration.ZipkinUrl")]
+        public string ZipkinUrl { get; set; }
     }
 }
