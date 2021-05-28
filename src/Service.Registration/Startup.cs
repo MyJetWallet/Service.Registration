@@ -47,7 +47,7 @@ namespace Service.Registration
 
             services.AddDatabase(RegistrationContext.Schema, Program.Settings.PostgresConnectionString, o => new RegistrationContext(o));
 
-            services.AddMyTelemetry(Program.Settings.ZipkinUrl);
+            services.AddMyTelemetry("SP-", Program.Settings.ZipkinUrl);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
